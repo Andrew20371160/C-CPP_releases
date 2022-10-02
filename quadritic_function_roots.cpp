@@ -67,7 +67,7 @@ switch(choice){
 case 1 : r1 = quad_sol_real_only(a,b,c);  cout<<"X1 = "<<r1.x1<<"     X2 = "<<r1.x2 ;break ;
 
 case 2 : r1 = quad_sol_real_only_loss_significance(a,b,c) ;  cout<<"X1 = "<<r1.x1<<"     X2 = "<<r1.x2 ;break ;
-case 3 :r1 = quad_sol_Complex_numbers(a,b,c) ;cout<<"X1 = "<<r1.x1<<"     X2 = "<<r1.x2 <<"i";break ;
+case 3 :r1 = quad_sol_Complex_numbers(a,b,c) ;cout<<"X1 = "<<r1.x1<<" + "<<r1.x2<<"i     X2 = "<<r1.x1 <<" + "<<-1*r1.x2 <<"i";break ;
 default: cout<<"wrong answer "; break;
 
 }
