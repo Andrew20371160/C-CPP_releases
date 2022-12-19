@@ -124,6 +124,6 @@ insert_data_via_user(&root) ;
 root =search(12,root);
 free(root) ;
 root = NULL ;
-
+system("pause");
 return 0 ;
 }
