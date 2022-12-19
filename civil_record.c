@@ -1,3 +1,6 @@
+//btw you know how c sucks in taking multiple string input so if you test it you will find weird output
+//but the data structure itself is functioning well feel free to develop it the way you see it better :)
+
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
