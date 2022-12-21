@@ -10,6 +10,7 @@ char ch ;
 while(1){
 cout<<"\n enter 'g' if someone won or its a draw ";
 cout<<"\n enter 'h' if if that's the place you want to play in ";
+cout<<"\n (w,a,s,d) for movent";
 cout<<"\n your position is : "<<inner+1<<","<<outer+1<<endl ;
 for(int i = 0 ; i <m ;i++){
     for(int j= 0; j<m ; j++){
@@ -65,6 +66,7 @@ else{
 }
 }
 cout<<"\n game finished";
-
+cout<<"\n credits : Dinosaur : Andrew karam "<<endl;
+system("pause");
 return 0 ;
 }
