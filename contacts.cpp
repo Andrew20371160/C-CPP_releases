@@ -8,7 +8,7 @@ node * right ;
 node * left ;
 };
 // the number is in char type to allow a more advanced search type of function (search_by_number(node * root , char * number))
-//make memory and insertion functions
+//get_node and insertion functions
 node * get_node(char* number , char * name ){
 node * newnode = new node ;
 newnode->number = new char[strlen(number)+1];
@@ -43,7 +43,7 @@ void search_by_name(node* root,char *name){
 if(root==NULL){
     return ;
 }
-//this line if user sends a full correct name it's faster that way to find the contact wanted
+//this line if the user sends a full correct name , it's faster that way to find the contact wanted
 else if(strcmp(root->name,name)==0){
 show_node(root);
 }
