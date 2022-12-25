@@ -182,9 +182,9 @@ node *del_all(node*root){
 if(root==NULL){
     return root ;
 }
- del_all(root->left) ;
+ root->left = del_all(root->left) ;
 root = del_node(root,root->name);
- del_all(root->right);
+root->right= del_all(root->right);
 }
 void interface(node * contacts){
 while(1){
