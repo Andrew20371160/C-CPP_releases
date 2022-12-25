@@ -1,5 +1,6 @@
 #include <iostream>
 #include<cstring>
+#define MAX 24
 using namespace std;
 struct node {
 char* number;
@@ -7,8 +8,9 @@ char * name ;
 node * right ;
 node * left ;
 };
+
 // the number is in char type to allow a more advanced search type of function (search_by_number(node * root , char * number))
-//get_node and insertion functions
+//make memory and insertion functions
 node * get_node(char* number , char * name ){
 node * newnode = new node ;
 newnode->number = new char[strlen(number)+1];
@@ -31,6 +33,16 @@ else {
     root->right = insert_node(root->right,number,name) ;
 }
 }
+node * insert_via_user(node * root){
+char name[MAX];
+char number[MAX] ;
+cout<<"\nEnter the contact's name\n";
+cin>>name;
+cout<<endl<<"Enter the contact's number\n";
+cin>>number ;
+root = insert_node(root ,number,name) ;
+return root ;
+}
 //search functions
 void show_node(node * root){
 if(root==NULL){
@@ -39,11 +51,13 @@ return ;
 cout<<endl<<"Name : "<<root->name<<endl;
 cout<<endl<<"Number : "<<root->number<<endl;
 }
+
+
 void search_by_name(node* root,char *name){
 if(root==NULL){
     return ;
 }
-//this line if the user sends a full correct name , it's faster that way to find the contact wanted
+//this line if user sends a full correct name it's faster that way to find the contact wanted
 else if(strcmp(root->name,name)==0){
 show_node(root);
 }
@@ -88,6 +102,30 @@ if(strcmp(portion,number)==0){
 search_by_number(root->left,number);
 search_by_number(root->right,number) ;
 }
+void search_via_user(node * contacts ){
+char str[MAX] ;
+int howsearch ;
+cout<<endl<<"1---Search by name\n2---Search by number\n";
+cin>>howsearch ;
+switch(howsearch){
+case 1:{
+cout<<"\n Enter what you remember of the name" ;
+cin>>str ;
+search_by_name(contacts,str);
+}break ;
+case 2:{
+cout<<"\n Enter what you remember of the number" ;
+cin>>str ;
+search_by_number(contacts,str) ;
+}break ;
+default :{
+    cout<<"\nWrong input\n";
+
+}break;
+}
+}
+
+
 void inorder(node * root){
 if(root==NULL){
     return ;
@@ -140,31 +178,62 @@ else {
 }
 return root ;
 }
-
 node *del_all(node*root){
 if(root==NULL){
     return root ;
 }
+ del_all(root->left) ;
 root = del_node(root,root->name);
+ del_all(root->right);
+}
+void interface(node * contacts){
+while(1){
+int choice;
+cout<<"\n1---Insert a new contact\n2---Search for a contact\n3---Show all contacts\n4---edit a contact\n5---Delete a contact";
+cout<<"\n6---Delete all contacts\n7---exit\n";
+cin>>choice ;
+switch(choice){
+case 1:{
+contacts = insert_via_user(contacts);
+}break ;
+case 2 :{
+search_via_user(contacts) ;
+}break ;
+case 3 :{
+inorder(contacts);
+}break ;
+case 4:{
+char str[MAX];
+search_via_user(contacts) ;
+cout<<"\n Now enter the exact contact's name you want to edit\n";
+cin>>str;
+contacts = del_node(contacts,str);
+contacts = insert_via_user(contacts);
+}break ;
+case 5 :{
+char str[MAX];
+search_via_user(contacts) ;
+cout<<endl<<"\n Now enter the exact name of the contact you want to delete\n";
+cin>>str;
+node * del = del_node(contacts,str);
+}break ;
+case 6:{
+    contacts = del_all(contacts);
+    contacts = NULL ;
+}break;
+case 7:{cout<<endl<<"Software made by : Andrew karam\n";
+system("\npause");
+exit(0);
+}break;
+}
+}
+
 }
 int main()
 {
-node*root = NULL ;
-char *names[6] = {"andrew","peter","andy","james","mark","ashe"};
-char * numbers[6] = {"1122","3568","7922","9871","1547","1988"};
-for(int i= 0 ; i <6 ;i++){
-    root = insert_node(root,numbers[i],names[i]);
-}
-cout<<"1st test \n";
-search_by_name(root,"a") ;
-cout<<"2nd test \n";
-search_by_name(root,"an") ;
-cout<<"3rd test \n";
-search_by_name(root,"and") ;
-cout<<"last test \n";
-search_by_name(root,"andr");
-del_all(root);
-//same applies for search_by_number function
-system("\npause");
+node * contacts = NULL ;
+interface(contacts) ;
+contacts =del_all(contacts);
+contacts = NULL ;
     return 0;
 }
