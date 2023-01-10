@@ -139,7 +139,8 @@ while(1){
 int choice ;
 cout<<endl<<"1---Insert new person data";
 cout<<endl<<"2---Search for a person";
-cout<<endl<<"3---Update person data (not including life status)"<<endl;
+cout<<endl<<"3---Update person data (
+including life status)"<<endl;
 cout<<"4---quit\n";
 cin>>choice;
 switch(choice){
