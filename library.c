@@ -160,14 +160,14 @@ int main(){
 action =insert(action,1,10,"james","the killer");
 action = insert(action,2,15,"mark","the shadow of a spy");
 action = insert(action,3,10,"andrew","demon in you");
-romance = insert(romance,4,10,"ahmed saad","ktab hyany ya 3en");
+romance = insert(romance,4,10,"ahmed saad","ktab hyany");
 romance = insert(romance,5,15,"abdelbaset hamoda","bosy kat");
 romance = insert(romance,6,20,"hamdy zrzor ","kitkat");
-horror = insert(horror,7,10,"sayd zpo","the the") ;
+horror = insert(horror,7,10,"sayd","the the") ;
 horror = insert(horror,8,10,"lambart ","the 5 *6 !=30") ;
 comedy = insert(comedy,9,10,"abdelbasset hamoda ","hya elodnya")  ;
 comedy = insert(comedy,10,10,"abdelbasset 2tota","tona now ya b8law")  ;
-comedy = insert(comedy,11,10,"andrew abdelbaset hamoda", "el e3az weltfser fe bet elkber") ;
+comedy = insert(comedy,11,10,"andrew abdelbaset hamoda", "el e3agz weltfser fe bet elkber") ;
 library();
 return  0;
 
