@@ -56,15 +56,15 @@ cout<<endl<<"Number : "<<root->number<<endl;
 
 void search_by_name(node* root,char *name){
 if(root==NULL){
-    printf("\nContact not found\n");
-    return   ;
+    return;
 }
 //this line if user sends a full correct name it's faster that way to find the contact wanted
 else if(strcmp(root->name,name)==0){
 show_node(root);
 return ;
 }
-else {
+
+search_by_name(root->left,name);
 //explanation of the following lines of codes is in search_by_number function
 int s = strlen(name);
 char * portion = new char[s];
@@ -75,9 +75,8 @@ for(int i = 0 ; i<s;i++){
 if(strcmp(portion,name)==0){
     show_node(root);
 }
-}
-search_by_name(root->left,name);
 search_by_name(root->right,name) ;
+return ;
 }
 void search_by_number(node*root,char*number){
 if(root==NULL){
@@ -86,7 +85,7 @@ if(root==NULL){
 else if(strcmp(root->number,number)==0){
 show_node(root);
 }
-else {
+search_by_number(root->left,number);
 
 //here we want to check if the portion the user gives us is exactly as the portion of the number in the current node (both of the same size)
 //meaning if user sends "22" then we compare it with first 2 digits of the number in the node and so on
@@ -101,9 +100,9 @@ for(int i = 0 ; i<s;i++){
 if(strcmp(portion,number)==0){
     show_node(root);
 }
-}
-search_by_number(root->left,number);
+
 search_by_number(root->right,number) ;
+return ;
 }
 void search_via_user(node * contacts ){
 char str[MAX] ;
@@ -188,14 +187,15 @@ node *del_all(node*root){
 if(root==NULL){
     return root ;
 }
- root->left = del_all(root->left) ;
+root->left = del_all(root->left) ;
 root = del_node(root,root->name);
 if(root==NULL){
     return root ;
 }
-root->right= del_all(root->right);
+root->right = del_all(root->right);
 return root ;
 }
+
 int main()
 {
 node * contacts = NULL ;
@@ -234,6 +234,9 @@ case 6:{
         break ;
     }
     contacts = del_all(contacts);
+    if(contacts==NULL){
+        break ;
+    }
     contacts = del_node(contacts,contacts->name);
 }break;
 case 7:{cout<<endl<<"\nThanks for using the software :) (Andrew)";
