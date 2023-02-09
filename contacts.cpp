@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include<cstring>
 #define MAX 24
@@ -32,16 +33,16 @@ else if(strcmp(name,root->name)<=0){
 else {
     root->right = insert_node(root->right,number,name) ;
 }
+return root ;
 }
-node * insert_via_user(node * root){
+void insert_via_user(node ** root){
 char name[MAX];
 char number[MAX] ;
 cout<<"\nEnter the contact's name\n";
 cin>>name;
 cout<<endl<<"Enter the contact's number\n";
 cin>>number ;
-root = insert_node(root ,number,name) ;
-return root ;
+*root = insert_node(*root ,number,name) ;
 }
 //search functions
 void show_node(node * root){
@@ -55,11 +56,13 @@ cout<<endl<<"Number : "<<root->number<<endl;
 
 void search_by_name(node* root,char *name){
 if(root==NULL){
-    return ;
+    printf("\nContact not found\n");
+    return   ;
 }
 //this line if user sends a full correct name it's faster that way to find the contact wanted
 else if(strcmp(root->name,name)==0){
 show_node(root);
+return ;
 }
 else {
 //explanation of the following lines of codes is in search_by_number function
@@ -68,7 +71,7 @@ char * portion = new char[s];
 for(int i = 0 ; i<s;i++){
     *(portion+i) = *(root->name+i);
 }
-*(portion+s)= NULL;
+*(portion+s)= '\0';
 if(strcmp(portion,name)==0){
     show_node(root);
 }
@@ -93,7 +96,7 @@ for(int i = 0 ; i<s;i++){
     *(portion+i) = *(root->number+i);
 }
 //don't forget to put null at last character to prevent bugs of having some joker sticker in the end of the (portion) string
-*(portion+s)= NULL;
+*(portion+s)= '\0';
 //we compare that portion and then magic happens :)
 if(strcmp(portion,number)==0){
     show_node(root);
@@ -143,6 +146,7 @@ return find_min(root->left);
 }
 node * del_node(node * root, char*name){
 if(root==NULL){
+    printf("\nNo such contact exists");
     return root ;
 }
 else if(strcmp(name,root->name)<0){
@@ -160,21 +164,23 @@ else if(root->left==NULL){
     node*temp = root;
     root =root->right ;
 delete[]temp ;
+temp = NULL ;
 }
 else if(root->right==NULL){
     node*temp = root;
     root =root->left ;
     delete[]temp;
+    temp = NULL ;
 }
 else {
     node*temp = find_min(root->right) ;
     root->name = new char[strlen(temp->name)+1];
     strcpy(root->name,temp->name);
-    root->number = temp->number ;
+    root->number = (char*)malloc(sizeof(char)*strlen(temp->number)+1);
+    strcpy(root->number,temp->number);
     root->right = del_node(root->right,temp->name);
-
 }
-
+return root ;
 }
 return root ;
 }
@@ -184,17 +190,23 @@ if(root==NULL){
 }
  root->left = del_all(root->left) ;
 root = del_node(root,root->name);
-root->right= del_all(root->right);
+if(root==NULL){
+    return root ;
 }
-void interface(node * contacts){
+root->right= del_all(root->right);
+return root ;
+}
+int main()
+{
+node * contacts = NULL ;
 while(1){
 int choice;
 cout<<"\n1---Insert a new contact\n2---Search for a contact\n3---Show all contacts\n4---edit a contact\n5---Delete a contact";
-cout<<"\n6---Delete all contacts\n7---exit\n";
+cout<<"\n6---Delete all contacts\n7---exit\nChoice : ";
 cin>>choice ;
 switch(choice){
 case 1:{
-contacts = insert_via_user(contacts);
+ insert_via_user(&contacts);
 }break ;
 case 2 :{
 search_via_user(contacts) ;
@@ -208,32 +220,27 @@ search_via_user(contacts) ;
 cout<<"\n Now enter the exact contact's name you want to edit\n";
 cin>>str;
 contacts = del_node(contacts,str);
-contacts = insert_via_user(contacts);
+insert_via_user(&contacts);
 }break ;
 case 5 :{
 char str[MAX];
 search_via_user(contacts) ;
 cout<<endl<<"\n Now enter the exact name of the contact you want to delete\n";
 cin>>str;
-node * del = del_node(contacts,str);
+contacts = del_node(contacts,str);
 }break ;
 case 6:{
+    if(contacts ==NULL){
+        break ;
+    }
     contacts = del_all(contacts);
-    contacts = NULL ;
+    contacts = del_node(contacts,contacts->name);
 }break;
-case 7:{cout<<endl<<"Software made by : Andrew karam\n";
-system("\npause");
+case 7:{cout<<endl<<"\nThanks for using the software :) (Andrew)";
+system("\npause\n");
 exit(0);
 }break;
 }
 }
-
-}
-int main()
-{
-node * contacts = NULL ;
-interface(contacts) ;
-contacts =del_all(contacts);
-contacts = NULL ;
-    return 0;
+return 0;
 }
