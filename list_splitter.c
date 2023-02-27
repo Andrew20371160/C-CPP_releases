@@ -1,103 +1,79 @@
-#include<stdio.h>
-#include<stdlib.h>
-struct node {
+#include <stdio.h>
+#include <stdlib.h>
+//Divide a linked list into 2 sublists
+//node structure
+typedef struct {
 int data ;
 struct node * next ;
-
-};
-
-struct node * add_at_empty(int d ){
-struct node * head = malloc(sizeof(struct node ));
-head ->data  =d   ;
-head->next = NULL ;
-return head ;
-};
-
-struct node *add_at_end(int d ,struct node * head ){
-if(head ==NULL){
-    head = add_at_empty(d) ;
+}node;
+//get memory for new node function
+node * get_node(int d){
+node * new_node = malloc(sizeof(node)) ;
+new_node->next = NULL;
+new_node->data=  d ;
+return new_node ;
 }
-else if(head ->next == NULL){
-    struct node * temp = add_at_empty(d) ;
-    temp->next =  NULL ;
-    head->next  = temp ;
-
+//insertion function
+node * insert(int d , node * head){
+if(head==NULL){
+    head= get_node(d) ;
 }
 else {
-    struct node * ptr=  head ;
-    struct node * temp  = add_at_empty(d) ;
-    while(ptr->next !=NULL){
-        ptr  =ptr->next ;
+    node*ptr = head ;
+    while(ptr->next!=NULL){
+        ptr = ptr->next ;
     }
-temp->next = NULL ;
-ptr->next= temp ;
-
+    node *new_node = get_node(d);
+    ptr->next = new_node;
 }
 return head ;
-};
-void show(struct node * head){
+}
+//display elements of a list
+void show(node*head){
 printf("\n");
-if(head ==NULL){
-    printf("\n list is empty ");
+while(head!=NULL){
+    printf("%d ",head->data);
+    head = head->next;
+}
+}
+//get size of a linked list
+int listsize(node *head){
+int size = 0 ;
+while(head!=NULL){
+    head = head->next;
+    size++;
+}
+return size ;
+}
+//body of the function
+void divide(node *head , node**left ,node**right){
+if(listsize(head)==0){
     return ;
 }
-struct node * ptr= head ;
-while(ptr !=NULL){
-    printf("%d ",ptr->data ) ;
-    ptr = ptr->next ;
-}
 
-
-}
-int list_size(struct node * head ){
-int s = 0 ;
-while(head!=NULL){
-    s++;
-    head = head->next ;
-}
-
-return s ;
-}
-void split_list(struct node ** head,struct node **left ,struct node **right ){
-struct node * ptr = (*head) ;
-int mid  = list_size(*head) /2 ;
-for(int i = 0 ; i <=mid  ;i++){
-    *left =add_at_end((ptr->data),(*left))  ;
-   ptr = ptr->next ;
-}
-for(int i = mid ; i<list_size(*head) ; i++){
-*right = add_at_end((ptr->data), (*right )) ;
-ptr = ptr->next ;
-if(ptr ==NULL){
-    break ;
+else{
+    node * ptr = head ;
+    int size = listsize(head);
+    for (int i = 0 ; i <size/2;i++){
+        *left = insert(ptr->data,*left);
+        ptr = ptr->next ;
+    }
+        for (int i = size/2 ; i <size;i++){
+        *right = insert(ptr->data,*right);
+        ptr = ptr->next ;
+    }
 }
 }
-
-
+int main()
+{
+node *head  = NULL;
+for(int i =0  ; i <15;i++){
+    head= insert(i+1,head) ;
 }
-
-int main(){
-
-struct node * head = NULL ;
- head=  add_at_end(1,head) ;
- head=  add_at_end(2,head) ;
- head=  add_at_end(6,head) ;
- head=  add_at_end(300,head) ;
- head=  add_at_end(3,head) ;
- head=  add_at_end(10,head) ;
- head=  add_at_end(38,head) ;
- head=  add_at_end(20,head) ;
- head=  add_at_end(-6,head) ;
-
-
-
-struct node * left = NULL;
-struct node * right = NULL ;
- split_list(&head,&left,&right)  ;
- show(head) ;
- show(left) ;
- show(right) ;
-
-return 0 ;
-
+node *left =NULL,*right = NULL  ;
+divide(head,&left,&right);
+show(head);
+show(left) ;
+show(right);
+    return 0;
 }
