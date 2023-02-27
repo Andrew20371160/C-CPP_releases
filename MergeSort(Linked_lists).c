@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-//Divide a linked list into 2 sublists
 //node structure
 typedef struct {
 int data ;
@@ -45,63 +44,61 @@ while(head!=NULL){
 }
 return size ;
 }
-void merge(node*left , node*right , node**head){
-node *pl = left;
-node *pr = right;
-node *ptr = *head;
+//MergeSort function
+void merge(node*left , node*right ,node**head){
+node*pl = left ;
+node*pr = right ;
+node*ptr = *head ;
 while(pl!=NULL&&pr!=NULL){
     if(pl->data<=pr->data){
-        ptr->data= pl->data;
-        pl = pl->next;
+        ptr->data = pl ->data ;
         ptr = ptr->next ;
+        pl = pl->next;
     }
     else{
         ptr->data =  pr->data ;
-        pr = pr->next ;
         ptr = ptr->next ;
+        pr=pr->next ;
     }
 }
-while(pr!=NULL){
-    ptr->data = pr->data  ;
-    ptr = ptr->next ; pr = pr->next;
-}
 while(pl!=NULL){
-    ptr->data = pl->data  ;
-    ptr = ptr->next ; pl = pl->next;
+    ptr->data = pl->data ;
+    ptr = ptr->next ;
+    pl = pl->next;
+}
+while(pr!=NULL){
+    ptr->data = pr->data ;
+    ptr = ptr->next ;
+    pr = pr->next;
 }
 }
+
 void mergesort(node**head){
-int size = listsize(*head) ;
+int size = listsize(*head);
 if(size<2){
     return ;
 }
+node *left = NULL ;
+node *right = NULL ;
 node*ptr = *head ;
-node*left = NULL ;
-node*right = NULL ;
-for(int i= 0 ; i <size/2;i++){
-    left= insert(ptr->data,left) ;
-    ptr = ptr->next;
+for(int i =0 ; i<size/2;i++ ){
+    left = insert(ptr->data,left) ;
+    ptr = ptr->next ;
 }
-for(int i= size/2 ; i <size;i++){
-    right= insert(ptr->data,right) ;
-    ptr = ptr->next;
+for(int i =size/2 ; i<size;i++ ){
+    right = insert(ptr->data,right) ;
+    ptr = ptr->next ;
 }
 mergesort(&left);
 mergesort(&right);
-merge(left,right,head) ;
+merge(left,right,head);
 }
-
-
-
 int main()
 {
-node *head  = NULL;
-head =insert(8,head) ;
-head =insert(2,head) ;
-head =insert(3,head) ;
-head =insert(7,head) ;
-head =insert(1,head) ;
-
+node *head = NULL;
+for(int i = 10 ; i >0 ; i--){
+    head=insert(i,head) ;
+}
 mergesort(&head);
 show(head);
     return 0;
