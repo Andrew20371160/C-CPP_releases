@@ -7,11 +7,12 @@
 //The idea is the user choses how he/she wants to use the software
 //It's like a template of a project that can be used in multiple things
 //Like: Bank system,school/university systems,and other data collecting systems
+//these next 4 strings are for the user to make it easier for him while interacting with the system
 char system_name[max];
 char int_name[max];
 char float_name[max];
 char char_name[max];
-
+//Node structure
 typedef struct {
 int num ;
 float fnum ;
@@ -31,6 +32,7 @@ newnode->right=NULL ;
 
 return newnode ;
 }
+//Insertion function
 node * insert(node * root ,int num , float fnum , char * str){
 if(root==NULL){
     root = getnode(num,fnum,str) ;
@@ -46,6 +48,7 @@ else {
 }
 return root ;
 }
+//takes data from user to insert it into the BST
 void insert_via_user(node**root){
 int num ;
 float f1 ;
@@ -74,6 +77,7 @@ else {
     return get_node_address(num,root->right);
 }
 }
+//show data function (can be combined with find_data function)
 void showdata(node*ptr){
 if(ptr==NULL){
     return ;
@@ -82,6 +86,7 @@ printf("\n%s : %d",int_name,ptr->num);
 printf("\n%s : %.2f",float_name,ptr->fnum);
 printf("\n%s : %s",char_name,ptr->str);
 }
+//Search function
 void find_node(int num,node * root){
 if(root==NULL){
     return ;
@@ -100,6 +105,7 @@ else {
     return find_max(root->right);
 }
 }
+//Update for float data or the string
 void update(int num,node**root){
 node * ptr = get_node_address(num,*root);
 showdata(ptr);
@@ -126,7 +132,7 @@ return;
 }
 }
 }
-
+//Deletion function
 node * del_data(int num,node*root){
 if(root==NULL){
     return root  ;
@@ -166,11 +172,13 @@ return root ;
 }
 return root ;
 }
+//This function does 3 things (calls one of 3 function)
 void find_update_del(int choice,node**root){
 int num ;
 printf("\nEnter the %s",int_name);
 scanf("%d",&num) ;
 switch(choice){
+//Go to main function and you will know why the numbers are in this order
 case 2 :{
 find_node(num,*root);
 }break;
@@ -185,7 +193,7 @@ default:{
 }
 }
 }
-
+//Display all data 
 void inorder(node*root){
 if(root==NULL){
     return  ;
