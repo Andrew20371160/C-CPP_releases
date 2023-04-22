@@ -2,12 +2,11 @@
 #include<stdlib.h>
 #include<string.h>
 #define max 20
-//project of everything (Beta of Beta )
-//Welcome to the POE (project of everything) Yeah stolen from stephen hawking
+//project of everything //Welcome to the POE (project of everything) Yeah stolen from stephen hawking
 //The idea is the user choses how he/she wants to use the software
 //It's like a template of a project that can be used in multiple things
 //Like: Bank system,school/university systems,and other data collecting systems
-//these next 4 strings are for the user to make it easier for him while interacting with the system
+//these next 4 strings are for the user to name different variables of the system
 char system_name[max];
 char int_name[max];
 char float_name[max];
@@ -20,6 +19,7 @@ char * str ;
 struct node * left ;
 struct node * right ;
 }node ;
+
 //get memory for a new node
 node * getnode(int num , float fnum , char * str){
 node * newnode= malloc(sizeof(node)) ;
@@ -193,7 +193,7 @@ default:{
 }
 }
 }
-//Display all data 
+//Display all data
 void inorder(node*root){
 if(root==NULL){
     return  ;
@@ -241,7 +241,7 @@ case 5:{
 inorder(root);
 }break;
 case 6 :{
-    printf("\nThat was a beta of a beta of the system i'm building hope you had fun (Andrew karam :) )");
+    printf("\nhope you had fun (Andrew karam :) )");
     system("pause");
     exit(0);
 }
