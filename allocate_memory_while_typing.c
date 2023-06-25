@@ -3,6 +3,7 @@
 
 int main()
 {
+
 char * str = NULL ;
 str = (char*)malloc(2*sizeof(char)) ;
 *(str+1) = '\0' ;
