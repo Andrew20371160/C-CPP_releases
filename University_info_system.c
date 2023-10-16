@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include<string.h>
-#define max 15
+#define max 40
 //student (node) structure definition
 typedef struct {
 int id,year;
@@ -45,6 +45,33 @@ printf("\nCan't have two or more students of same ID\n");
 }
     return root ;
 }
+//get data from user then insert it into the bst
+void insert_via_user(node**root){
+char name[max],lname[max],program[max];
+int id,year;
+float gpa;
+printf("\nEnter the first name : ");
+scanf("%s",name) ;
+fflush(stdin);
+printf("\nEnter the last name : ");
+scanf("%s",lname) ;
+fflush(stdin);
+printf("\nEnter the program : ");
+scanf("%s",program) ;
+fflush(stdin);
+printf("\nEnter the ID : ");
+scanf("%d",&id) ;
+printf("\nEnter the College year : ");
+scanf("%d",&year) ;
+if(year!=1){
+printf("\nEnter previous year GPA : ");
+scanf("%s",program) ;
+}
+else {
+    gpa = 0.0;
+}
+*root=insert(*root,id,year,gpa,name,lname,program);
+}
 //Show data function
 void show(node*root){
 if(root==NULL){
@@ -83,28 +110,22 @@ if(root==NULL){
 root->left = find_name(root->left,name);
 //here is an algorithm that if the researcher wants to search with a part of a student's name
 //It shows all possible matches
-{
-if(strcmp(name,root->name)==0){
-    show(root) ;
-}
-else{
-int len = strlen(name);
+char flag = 0;
 int i = 0 ;
-char* part  = (char*)malloc(sizeof(char)*(len+1)); ;
-while(len!=0){
-*(part+i) = *(root->name+i) ;
-len--;
+while(*(name+i)&&*(root->name+i)){
+if(*(name+i)!=*(root->name+i)){
+flag= 1;
+break ;
+}
 i++;
 }
-*(part+i)='\0';
-if(strcmp(part,name)==0){
-    show(root);
-}
-}
+if((*(name+i)=='\0')&&flag==0){
+show(root);
 }
 root->right = find_name(root->right,name);
 return root ;
 }
+
 void how_search(node **root){
 int choice ;
 printf("\n1---Search by ID\n2---Search by name\nChoice : ");
@@ -114,13 +135,14 @@ case 1 : {
 int id ;
 printf("\nEnter the ID : ");
 scanf("%d",&id);
-*(root) =find_id(*root,id);
+find_id(*root,id);
 }break;
 case 2 :{
 char name[max] ;
 printf("Enter the first name or part of it : ");
 scanf("%s",name);
-*(root)=find_name(*root,name) ;
+fflush(stdin);
+find_name(*root,name) ;
 }break;
 default :{
 printf("\nWrong input\n");
@@ -134,22 +156,17 @@ if(root==NULL){
     return root ;
 }
 root->left = show_program(root->left,program) ;
-if(strcmp(program,root->program)==0){
-    show(root) ;
-}
-else{
-int len = strlen(program);
+char flag = 0;
 int i = 0 ;
-char* part  = (char*)malloc(sizeof(char)*(len+1)); ;
-while(len!=0){
-*(part+i) = *(root->program+i) ;
-len--;
+while(*(program+i)&&*(root->program+i)){
+if(*(program+i)!=*(root->program+i)){
+flag= 1;
+break ;
+}
 i++;
 }
-*(part+i)='\0';
-if(strcmp(part,program)==0){
-    show(root);
-}
+if((*(program+i)=='\0')&&flag==0){
+show(root);
 }
 root->right = show_program(root->right,program);
 return root ;
@@ -221,50 +238,53 @@ else {
 }
 return root ;
 }
-node * del_stud(node * root , int id){
-if(root==NULL){
-    return root ;
+
+node* del_stud(node* root, int id) {
+    if (root == NULL) {
+        return root;
+    }
+    if (id < root->id) {
+        root->left = del_stud(root->left, id);
+    } else if (id > root->id) {
+        root->right = del_stud(root->right, id);
+    } else {
+        if (root->left == NULL) {
+            node* temp = root->right;
+            free(root);
+            return temp;
+        } else if (root->right == NULL) {
+            node* temp = root->left;
+            free(root);
+            return temp;
+        }
+        node* temp = get_max(root->left);
+        root->id = temp->id;
+        root->gpa = temp->gpa;
+        root->year = temp->year;
+        strcpy(root->name, temp->name);
+        strcpy(root->lname, temp->lname);
+        strcpy(root->program, temp->program);
+        root->left = del_stud(root->left, temp->id);
+    }
+    return root;
 }
-else if(id<root->id){
-    root->left= del_stud(root->left,id);
+
+
+node* del_all(node* root) {
+    if (root != NULL) {
+        del_all(root->left);
+        free(root->name);
+        free(root->lname);
+        free(root->program);
+
+        free(root) ;
+        del_all(root->right);
+    }
+    return NULL;
 }
-else if(id>root->id){
-    root->right= del_stud(root->right,id);
-}
-else{
-if(root->left==NULL&&root->right ==NULL){
-    free(root) ;
-    root = NULL;
-}
-else if(root->right==NULL){
-    node*temp = root ;
-    root = root->left ;
-    free(temp) ;
-    temp = NULL;
-}
-else if(root->left==NULL){
-    node*temp = root ;
-    root = root->right ;
-    free(temp) ;
-    temp = NULL;
-}
-else {
-node *temp = get_max(root->left) ;
-root->id = temp->id ;
-root->gpa = temp->gpa ;
-root->year = temp->year ;
-root->name = (char*)malloc(sizeof(char)*(strlen(temp->name)+1));
-strcpy(root->name,temp->name) ;
-root->lname = (char*)malloc(sizeof(char)*(strlen(temp->lname)+1));
-strcpy(root->lname,temp->lname) ;
-root->program = (char*)malloc(sizeof(char)*(strlen(temp->program)+1));
-strcpy(root->program,temp->program) ;
-root->left = del_stud(root->left,temp->id) ;
-}
-return root ;
-}
-return root ;
-}
+
+
+
 int main()
 {
 node * root = NULL ;
@@ -278,31 +298,13 @@ while(1){
 int choice ;
 printf("\n----University Information System----\n");
 printf("\n1---Insert a new student\n2---Update a student's data\n3---Search for a student\n"
-"4---Show students in a certain program\n5---Delete a student from the system\n6---exit\nChoice : ");
+"4---Show students in a certain program\n5---Delete a student from the system\n6---delete all students"
+"\n7---exit\nChoice : ");
 scanf("%d",&choice);
+fflush(stdin);
 switch(choice){
 case 1 :{
-char name[max],lname[max],program[max];
-int id,year;
-float gpa;
-printf("\nEnter the first name : ");
-scanf("%s",name) ;
-printf("\nEnter the last name : ");
-scanf("%s",lname) ;
-printf("\nEnter the program : ");
-scanf("%s",program) ;
-printf("\nEnter the ID : ");
-scanf("%d",&id) ;
-printf("\nEnter the College year : ");
-scanf("%d",&year) ;
-if(year!=1){
-printf("\nEnter previous year GPA : ");
-scanf("%s",program) ;
-}
-else {
-    gpa = 0.0;
-}
-root=insert(root,id,year,gpa,name,lname,program);
+insert_via_user(&root) ;
 }break ;
 
 case 2:{
@@ -318,6 +320,7 @@ case 4:{
 char prog[max] ;
 printf("\nEnter the program's name or part of it : ");
 scanf("%s",prog) ;
+fflush(stdin);
 show_program(root,prog) ;
 }break ;
 case 5:{
@@ -327,6 +330,9 @@ scanf("%d",&id);
 root=del_stud(root,id);
 }break ;
 case 6:{
+root=  del_all(root);
+}break;
+case 7:{
 printf("\nThanks for using the program :) (Andrew karam)\n");
 system("pause");
 exit(0);
@@ -336,6 +342,6 @@ printf("\nWrong input\n");
 }break;
 }
 }
-free(root) ;
+
     return 0;
 }
