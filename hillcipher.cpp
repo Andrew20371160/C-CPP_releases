@@ -98,6 +98,36 @@ for(int i =0 ; i <rows;i++){
     }
 }
 return sum ;
+    /*
+    if(isSquare()){
+Matrix mat_cpy =*this;
+for(int up_r = 0;up_r<rows-1; up_r++){
+    for(int low_r = up_r+1; low_r<rows; low_r++){
+        //check first if upper element is not zero
+        if(mat_cpy.data[up_r][up_r]==0){
+            //switch the rows
+            for(int i = 0 ;  i<cols;i++){
+                float temp = mat_cpy.data[up_r][i]  ;
+                mat_cpy.data[up_r][i] = mat_cpy.data[low_r][i] ;
+                mat_cpy.data[low_r][i]= temp;
+            }
+        }
+        else{
+            float c = -1*(mat_cpy.data[low_r][up_r]/mat_cpy.data[up_r][up_r]);
+            for(int i =0 ; i<cols;i++){
+                mat_cpy.data[low_r][i]+=c*mat_cpy.data[up_r][i] ;
+            }
+        }
+    }
+}
+float det = 1 ;
+for(int i =0 ; i <rows; i++){
+    det*=mat_cpy.data[i][i]  ;
+}
+return det ;
+
+    
+    */
 }
 
 void matrix ::mat_mult(matrix *mat1,matrix *mat2){
